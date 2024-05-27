@@ -35,10 +35,10 @@ class BukuController extends Controller
         $buku = Buku::create($data);
 
         if ($buku) {
-            return redirect()->back()->with('status', 'success');
+            return back()->with('status', 'success');
         }
 
-        return redirect()->back()->with('status', 'failed');
+        return back()->with('status', 'failed');
     }
 
     public function update(Buku $buku, Request $request) {
@@ -48,18 +48,18 @@ class BukuController extends Controller
             'penerbit' => 'required|string',
             'tahun_terbit' => 'required|date',
             'isbn' => 'required|string',
-            'kategori_id' => 'required|exists:kategori,id',
+            'kategori_id' => 'required|exists:kategoris,id',
             'jumlah_salinan' => 'required|numeric'
         ]);
 
         $buku->update($data);
 
-        return redirect()->back()->with('status', 'success');
+        return back()->with('status', 'success');
     }
 
     public function destroy(Buku $buku) {
         $buku->delete();
 
-        return redirect()->back()->with('status', 'success');
+        return back()->with('status', 'success');
     }
 }

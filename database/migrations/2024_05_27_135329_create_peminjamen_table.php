@@ -15,9 +15,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('buku_id');
             $table->foreignUuid('user_id');
-            $table->timestamp('tanggal_peminjaman')->useCurrent();
-            $table->timestamp('tanggal_pengembalian')->nullable();
-            $table->timestamp('tenggat_pengembalian')->nullable();
+            $table->dateTime('tanggal_peminjaman');
+            $table->dateTime('tanggal_pengembalian')->nullable();
+            $table->dateTime('tenggat_pengembalian');
             $table->timestamps();
         });
     }

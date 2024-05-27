@@ -1,4 +1,8 @@
-module.exports = {
+import defaultTheme from 'tailwindcss/defaultTheme';
+import forms from '@tailwindcss/forms';
+
+/** @type {import('tailwindcss').Config} */
+export default {
     content: [
       "./resources/**/*.blade.php",
       "./resources/**/*.js",
@@ -6,7 +10,11 @@ module.exports = {
       "./node_modules/flowbite/**/*.js"
     ],
     theme: {
-      extend: {},
+      extend: {
+          fontFamily: {
+            sans: ['Lato', 'Figtree', ...defaultTheme.fontFamily.sans],
+        },
+      },
     },
     plugins: [
         require('flowbite/plugin')
