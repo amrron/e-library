@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'role',
+        'status',
         'password',
     ];
 
@@ -46,5 +47,19 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function scopeMember($query) {
+        return $query->where('role', 'user');
+    }
+
+    public function scopeAdmin($query) {
+        return $query->where('role', 'admin');
+    }
+
+    public function getJoinDateAttribute() {
+        \Carbon\Carbon::setLocale('id');
+
+        return \Carbon\Carbon::parse($this->created_at)->translatedFormat('j F Y');
     }
 }

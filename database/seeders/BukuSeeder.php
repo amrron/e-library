@@ -21,7 +21,8 @@ class BukuSeeder extends Seeder
             'tahun_terbit' => 'Andrea Hirata',
             'isbn' => 'Andrea Hirata',
             'kategori_id' => Kategori::where('nama', 'Fiksi')->first()->id,
-            'jumlah_salinan' => 5
+            'jumlah_salinan' => 5,
+            'cover' => "https://inc.mizanstore.com/aassets/img/com_cart/produk/covFL-12.jpg"
         ]);
     }
 }

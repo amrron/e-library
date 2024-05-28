@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     public function index() {
-        $users = User::where('role', 'user')->get();
+        $users = User::member()->get();
 
-        return view('user', [
+        return view('member', [
             'users' => $users
         ]);
     }

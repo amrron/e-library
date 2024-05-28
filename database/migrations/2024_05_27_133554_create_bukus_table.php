@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('tahun_terbit');
             $table->string('isbn')->unique();
             $table->integer('jumlah_salinan');
+            $table->string('cover');
             $table->timestamps();
         });
     }
