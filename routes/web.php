@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,8 @@ Route::get('/dashboard', function(){
 })->name('dashboard');
 
 Route::get('/member', [UserController::class, 'index'])->name('member');
+
+Route::post('/member', [UserController::class, 'store']);
+
+Route::get('/peminjaman', [PeminjamanController::class, 'index'])->name('peminjaman');
+Route::post('/peminjaman', [PeminjamanController::class, 'store'])->name('peminjaman');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -19,8 +20,10 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            // 'password' => 'required|string|min:8|confirmed',
         ]);
+
+        $data['password'] = Hash::make($data['email']);
 
         $user = User::create($data);
 

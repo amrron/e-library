@@ -11,4 +11,14 @@ class Peminjaman extends Model
     use HasFactory, HasUuids;
 
     protected $guarded = [];
+
+    public function buku()
+    {
+        return $this->belongsTo(Buku::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

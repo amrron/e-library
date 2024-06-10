@@ -3,6 +3,7 @@ import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'false',
     content: [
       "./resources/**/*.blade.php",
       "./resources/**/*.js",

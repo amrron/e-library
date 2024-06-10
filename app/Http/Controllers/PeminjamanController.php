@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use App\Models\Peminjaman;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -11,9 +12,13 @@ class PeminjamanController extends Controller
 {
     public function index() {
         $peminjamans = Peminjaman::all();
+        $users = User::member()->get();
+        $books = Buku::all();
 
         return view('peminjaman', [
-            'peminjamans' => $peminjamans
+            'peminjamans' => $peminjamans,
+            'users' => $users,
+            'books' => $books,
         ]);
     }
 
