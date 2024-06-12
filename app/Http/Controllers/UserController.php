@@ -16,6 +16,13 @@ class UserController extends Controller
         ]);
     }
 
+    public function show(User $user) {
+        return response()->json([
+            'status' => true,
+            'data' => $user
+        ], 201);
+    }
+
     public function store(Request $request) {
         $data = $request->validate([
             'name' => 'required|string',
@@ -34,14 +41,48 @@ class UserController extends Controller
         return back()->with('status', 'failed');
     }
 
-    public function update(User $user, Request $request) {
+    public function update(Request $request) {
         $data = $request->validate([
             'name' => 'required|string',
-            'email' => 'required|email|unique:users,email'
+            'email' => 'required|email'
         ]);
 
-        $user->update($data);
+        $user = User::where('member_id', $request->member_id)->first();
 
-        return back()->with('status', 'success');
+        if ($user) {
+            $user->update([
+                'name' => $data['name'],
+                'email' => $data['email']
+            ]);
+            
+            return back()->with('status', 'success');
+        }
+
+        else  {
+            return back()->with('status', 'failed');
+        }
+
+    }
+
+    public function block(User $user) {
+        $user->update([
+            'status' => false
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'data' => $user
+        ], 201);
+    }
+
+    public function unblock(User $user) {
+        $user->update([
+            'status' => true
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'data' => $user
+        ], 201);
     }
 }

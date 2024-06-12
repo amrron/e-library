@@ -40,11 +40,18 @@ class PeminjamanController extends Controller
         return back()->with('status', 'failed');
     }
 
-    public function returnBook(Buku $buku) {
-        $buku->update([
+    public function returnBook(Peminjaman $peminjaman) {
+
+        // $peminjaman->tanggal_pengembalian = Carbon::now();
+        // $peminjaman->save();
+
+        $peminjaman->update([
             'tanggal_pengembalian' => Carbon::now()
         ]);
 
-        return back()->with('status', 'success');
+        return response()->json([
+            'status' => true,
+            'message' => 'Buku berhasil dikembalikan'
+        ], 201);
     }
 }

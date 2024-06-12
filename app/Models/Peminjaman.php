@@ -21,4 +21,8 @@ class Peminjaman extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getIsReturnedAttribute(){
+        return $this->tanggal_pengembalian !== null;
+    }
 }

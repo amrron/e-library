@@ -22,4 +22,18 @@ class Buku extends Model
             return $query->where('kategori_id', $kategori);
         });
     }
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class);
+    }
+
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class);
+    }
+
+    public function getIsAvailableAttribute() {
+        return $this->jumlah_salinan > $this->peminjaman->whereNull('tanggal_pengembalian')->count();
+    }
 }

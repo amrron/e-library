@@ -76,7 +76,7 @@ class User extends Authenticatable
             // Menghasilkan angka acak dengan panjang 7 digit
             $randomNumber = str_pad(mt_rand(1, 9999999), 7, '0', STR_PAD_LEFT);
 
-            if ($user->is_admin) {
+            if ($user->role == 'admin') {
                 $user->member_id = 'ADM' . $randomNumber;
             } else {
                 $user->member_id = 'MBR' . $randomNumber;
@@ -85,7 +85,7 @@ class User extends Authenticatable
             // Pastikan member_id unik
             while (DB::table('users')->where('member_id', $user->member_id)->exists()) {
                 $randomNumber = str_pad(mt_rand(1, 9999999), 7, '0', STR_PAD_LEFT);
-                if ($user->is_admin) {
+                if ($user->role == 'admin') {
                     $user->member_id = 'ADM' . $randomNumber;
                 } else {
                     $user->member_id = 'MBR' . $randomNumber;

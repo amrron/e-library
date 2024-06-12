@@ -3,6 +3,7 @@
 @section('cdn')
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 
 @section('content')
@@ -25,7 +26,7 @@
 
     <!-- Masukin search bar -->
 
-    <div class="relative overflow-x-auto rounded-lg p-2">
+    <div class="relative overflow-x-auto rounded-lg shadow-md sm:rounded-lg mx-2 p-2">
         <table class="w-full p-2 text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-white">
                 <tr>
@@ -42,6 +43,9 @@
                         Tenggat Pengembalian
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Tanggal Pengembalian
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Judul Buku
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -50,7 +54,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="odd:bg-white even:bg-gray-50 ">
+                {{-- <tr class="odd:bg-white even:bg-gray-50 ">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         Thoriq Muhammad Pasya
                     </th>
@@ -64,12 +68,15 @@
                         23 Juni 2024
                     </td>
                     <td class="px-6 py-4">
+                        23 Juni 2024
+                    </td>
+                    <td class="px-6 py-4">
                         Books of IOT
                     </td>
                     <td class="px-6 py-4">
                         <a href="#" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-xs px-4 py-2 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Pengembalian</a>
                     </td>
-                </tr>
+                </tr> --}}
                 @foreach ($peminjamans as $peminjam)
                 <tr class="odd:bg-white even:bg-gray-50 ">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
@@ -85,10 +92,15 @@
                         {{ $peminjam->tenggat_pengembalian }}
                     </td>
                     <td class="px-6 py-4">
+                        {{ $peminjam->tanggal_pengembalian }}
+                    </td>
+                    <td class="px-6 py-4">
                         {{ $peminjam->buku->judul }}
                     </td>
                     <td class="px-6 py-4">
-                        <a href="#" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-xs px-4 py-2 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Pengembalian</a>
+                        @if (!$peminjam->isReturned)
+                        <button type="button" data-id="{{ $peminjam->id }}" class="return-button focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-xs px-4 py-2 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800" >Pengembalian</button>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
@@ -166,5 +178,46 @@
         };
 
         let tomMember = new TomSelect("#tom-member", tomSelectOptions)
+
+        $('.return-button').on('click', function(){
+            let id = $(this).data('id');
+            
+            Swal.fire({
+                title: "Kembalikan buku?",
+                // text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#171942",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, kembalikan buku"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/peminjaman/return/' + id,
+                        type: 'PATCH',
+                        contentType: false,
+                        processData: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response){
+                            console.log(response);
+
+                            Swal.fire({
+                                title: "Berhasil!",
+                                text: "Buku berhasil dikembalikan.",
+                                icon: "success"
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(error) {
+                            console.error(error);
+                        }
+                    }); 
+                
+                }
+            });
+        })
     </script>
 @endsection
