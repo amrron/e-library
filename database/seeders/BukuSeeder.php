@@ -18,8 +18,8 @@ class BukuSeeder extends Seeder
             'judul' => 'Laskar Pelangi',
             'author' => 'Andrea Hirata',
             'penerbit' => 'Andrea Hirata',
-            'tahun_terbit' => 'Andrea Hirata',
-            'isbn' => 'Andrea Hirata',
+            'tahun_terbit' => '2000',
+            'isbn' => '092340235732042',
             'kategori_id' => Kategori::where('nama', 'Fiksi')->first()->id,
             'jumlah_salinan' => 5,
             'cover' => "https://inc.mizanstore.com/aassets/img/com_cart/produk/covFL-12.jpg"

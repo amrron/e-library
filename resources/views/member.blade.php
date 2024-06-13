@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@section('cdn')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@endsection
+
 @section('content')
     <div class="p-2 rounded-lg">
         <div class="flex justify-between flex-wrap gap-6 p-6 mb-2 bg-[#EAEAFF] text-[#171942] rounded-lg drop-shadow-lg">
@@ -59,7 +63,7 @@
                     <td class="px-6 py-4">
                         {{ $user->joinDate }}
                     </td>
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-4 flex flex-wrap gap-2">
                         <button type="button" class="update-button focus:outline-none text-white inline-flex gap-1 items-center bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-4 py-2 me-2" data-id="{{ $user->id }}" data-modal-target="update-modal" data-modal-toggle="update-modal">
                             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2" d="M7 19H5a1 1 0 0 1-1-1v-1a3 3 0 0 1 3-3h1m4-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm7.441 1.559a1.907 1.907 0 0 1 0 2.698l-6.069 6.069L10 19l.674-3.372 6.07-6.07a1.907 1.907 0 0 1 2.697 0Z"/>
@@ -206,45 +210,91 @@
         $('.block-button').on('click', function(){
             let id = $(this).data('id');
 
-            $.ajax({
-                url: '/member/block/' + id,
-                method: 'PUT',
-                contentType: false,
-                processData: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response){
-                    console.log(response);
+            Swal.fire({
+                title: "Blokir anggota?",
+                // text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#171942",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, blokir anggota"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/member/block/' + id,
+                        method: 'PUT',
+                        contentType: false,
+                        processData: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response){
+                            console.log(response);
 
-                    window.location.reload()
-                },
-                error: function(error) {
-                    console.error(error);
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Berhasil memblokir anggota",
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function(){
+                                window.location.reload()
+                            });
+
+                        },
+                        error: function(error) {
+                            console.error(error);
+                        }
+                    });  
+                
                 }
-            }); 
+            });
+
         });
 
         $('.unblock-button').on('click', function(){
             let id = $(this).data('id');
 
-            $.ajax({
-                url: '/member/unblock/' + id,
-                method: 'PUT',
-                contentType: false,
-                processData: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response){
-                    console.log(response);
+            Swal.fire({
+                title: "Buka blokir anggota?",
+                // text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#171942",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, buka blokir anggota"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/member/unblock/' + id,
+                        method: 'PUT',
+                        contentType: false,
+                        processData: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response){
+                            console.log(response);
 
-                    window.location.reload()
-                },
-                error: function(error) {
-                    console.error(error);
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Berhasil membuka memblokir anggota",
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function(){
+                                window.location.reload()
+                            });
+
+                        },
+                        error: function(error) {
+                            console.error(error);
+                        }
+                    });
+                
                 }
-            }); 
+            });
+             
         });
 
         

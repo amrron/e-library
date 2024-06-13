@@ -93,6 +93,8 @@
                     </td>
                     <td class="px-6 py-4">
                         {{ $peminjam->tanggal_pengembalian }}
+                        <br>
+                        {{ $peminjam->keterangan }}
                     </td>
                     <td class="px-6 py-4">
                         {{ $peminjam->buku->judul }}

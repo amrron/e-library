@@ -36,4 +36,10 @@ class Buku extends Model
     public function getIsAvailableAttribute() {
         return $this->jumlah_salinan > $this->peminjaman->whereNull('tanggal_pengembalian')->count();
     }
+
+    public function getStokAttribute() {
+        $dipinjam = $this->peminjaman()->whereNull('tanggal_pengembalian')->count();
+
+        return $this->jumlah_salinan - $dipinjam . " / $this->jumlah_salinan" ;
+    }
 }

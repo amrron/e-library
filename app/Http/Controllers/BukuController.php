@@ -18,7 +18,14 @@ class BukuController extends Controller
         ]);
     }
 
-    public function show(Buku $buku) {
+    public function show(Buku $buku, Request $request) {
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => true,
+                'data' => $buku
+            ], 201);
+        }
+
         return view('buku-detail', [
             'buku' => $buku
         ]);
@@ -51,14 +58,19 @@ class BukuController extends Controller
 
     public function update(Buku $buku, Request $request) {
         $data = $request->validate([
-            'judu' => 'required|string',
+            'judul' => 'required|string',
             'author' => 'required|string',
             'penerbit' => 'required|string',
-            'tahun_terbit' => 'required|date',
+            'tahun_terbit' => 'required|numeric',
             'isbn' => 'required|string',
             'kategori_id' => 'required|exists:kategoris,id',
-            'jumlah_salinan' => 'required|numeric'
+            'jumlah_salinan' => 'required|numeric',
+            'cover' => 'mimes:jpg,jpeg,png|max:10000',
         ]);
+
+        if($request->file('cover')){
+            $data['cover'] = env('APP_URL') . "/storage/" . $request->file('cover')->store('cover');
+        }
 
         $buku->update($data);
 

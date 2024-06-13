@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class PeminjamanController extends Controller
 {
     public function index() {
-        $peminjamans = Peminjaman::all();
+        $peminjamans = Peminjaman::all()->sortBy('tanggal_pengembalian');
         $users = User::member()->get();
         $books = Buku::all();
 
@@ -27,6 +27,10 @@ class PeminjamanController extends Controller
             'buku_id' => 'required|string|exists:bukus,id',
             'user_id' => 'required|string|exists:users,id',
         ]);
+
+        if (!User::where('id', $data['user_id'])->first()->status) {
+            return back()->with('status', 'failed');
+        }
 
         $data['tanggal_peminjaman'] = Carbon::now();
         $data['tenggat_pengembalian'] = Carbon::now()->addDays(7);
@@ -51,7 +55,8 @@ class PeminjamanController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Buku berhasil dikembalikan'
+            'message' => 'Buku berhasil dikembalikan',
+            'data' => $peminjaman
         ], 201);
     }
 }
